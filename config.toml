@@ -1,0 +1,48 @@
+baseURL = "https://leonstafford.github.io/"
+title = "Leon Stafford"
+
+languageCode = "en-us"
+defaultcontentlanguage = "en"
+
+theme = "coder"
+
+[params]
+    author = "Leon Stafford"
+    description = "Bio site of developer"
+    keywords = "developer,bio,essays"
+    info = "Open source developer"
+
+
+    avatarurl = "images/avatar.jpg"
+    footercontent = "I see inefficiencies and I optimize them"
+
+    hideCredits = true
+    hideCopyright = true
+
+    # Custom CSS
+    custom_css = ["css/extra-styles.css"]
+
+[[params.social]]
+    name = "Github"
+    icon = "fab fa-github"
+    weight = 1
+    url = "https://github.com/leonstafford/"
+[[params.social]]
+    name = "Twitter"
+    icon = "fab fa-twitter"
+    weight = 2
+    url = "https://twitter.com/wp2static/"
+[[params.social]]
+    name = "Email"
+    icon = "fas fa-envelope"
+    weight = 3
+    url = "mailto:leon@wp2static.com"
+
+[[menu.main]]
+    name = "Essays"
+    weight = 1
+    url  = "/essays/"
+[[menu.main]]
+    name = "About"
+    weight = 2
+    url = "/about/"
