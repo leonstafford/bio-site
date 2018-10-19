@@ -81,7 +81,18 @@ sudo /opt/bitnami/ctlscript.sh restart apache
 https://docs.bitnami.com/google/apps/wordpress-multisite/administration/use-htpasswd/
  
 
+**less noisy error log**
 
+`sudo echo 'ErrorLogFormat "\n \"%M\" \n  "' >> /opt/bitnami/apache2/conf/httpd.conf`
+
+^ needed re-rediting to affect the CR's, look to fix
+
+
+**import vim and tmux confs**
+
+`curl https://gist.githubusercontent.com/leonstafford/6891b76aeaf43766dd52676d6bed1b08/raw/9979e28a9abf07af94b505d35ff9a4eb3da7cb9f/.tmux.conf --output ~/.tmux.conf`
+
+`curl https://gist.githubusercontent.com/leonstafford/39333da3399adee7e88cb869b4685dff/raw/5e6e7b7fb834d996763da3d358d949d309691350/.vimrc --output ~/.vimrc`
 
 
 [back](/)
