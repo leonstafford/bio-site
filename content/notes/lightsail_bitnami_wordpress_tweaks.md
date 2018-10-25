@@ -38,39 +38,31 @@ Tired of clunkily updating a GitHub gist, herein lie my notes used when
   - `RewriteEngine On`
   - `RewriteCond %{HTTPS} !=on`
   - `RewriteRule ^/(.*) https://%{SERVER_NAME}/$1 [R,L]`
- - `sudo /opt/bitnami/ctlscript.sh restart apache`
-
-
-
-
-
-
+ - Restart server to enforce https
+  - `sudo /opt/bitnami/ctlscript.sh restart apache`
  - backup wp-config somewhere
-
-
+  - `sudo cp /opt/bitnami/apps/wordpress/htdocs/wp-config.php /opt/bitnami/apps/wordpress/wp-config-backup-randstring.php`
  - disable mod pagespeed
-
-`sudo vim /opt/bitnami/apache2/conf/pagespeed.conf`
-
-
-
-
-
- - copy files into WP dir
-
- - replace wp-config
- - replace site urls in wp-config
- - rewrite any hard links within site
-`find -name '*.css' -exec sed -i 's/OLD.domain.com/NEW.wp2static.com/g' {} +`
-`wp search-replace 'OLD.domain.com' 'NEW.wp2static.com'`
-
+  - `sudo vim /opt/bitnami/apache2/conf/pagespeed.conf`
+  - `ModPagespeed on` > `ModPagespeed off`
+  - `sudo /opt/bitnami/ctlscript.sh restart apache`
+ - copy existing site's files into WP dir
+ - backup existing wp-config
+  - `sudo cp /opt/bitnami/apps/wordpress/htdocs/wp-config.php /opt/bitnami/apps/wordpress/user-original-wp-config-backup-randstring.php`
+ - restore Bitnami's wp-config
+ - copy any custom `define`'s or code from existing wp-config
+ - import users DB
+  - delete bitnami_wordpress
+  - create bitnami_wordpress
+  - import .sql
+ - rewrite any hard links within DB
+  - `sudo wp --allow-root search-replace 'OLD.domain.com' 'NEW.wp2static.com'`
+ - rewrite any hard links within site (optional, careful of mailto links, etc)
+  - `find -name '*.css' -exec sed -i 's/OLD.domain.com/NEW.wp2static.com/g' {} +`
  - reset file permissions
-
-```
-sudo chown -R bitnami:daemon /opt/bitnami/apps/wordpress/htdocs/
-sudo find /opt/bitnami/apps/wordpress/htdocs/ -type f -exec chmod 664 {} \;
-sudo find /opt/bitnami/apps/wordpress/htdocs/ -type d -exec chmod 775 {} \;
-```
+  - `sudo chown -R bitnami:daemon /opt/bitnami/apps/wordpress/htdocs/`
+  - `sudo find /opt/bitnami/apps/wordpress/htdocs/ -type f -exec chmod 664 {} \;`
+  - `sudo find /opt/bitnami/apps/wordpress/htdocs/ -type d -exec chmod 775 {} \;`
 
 
  - enable debugging
