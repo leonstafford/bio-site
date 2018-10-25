@@ -57,12 +57,15 @@ Tired of clunkily updating a GitHub gist, herein lie my notes used when
   - import .sql
  - rewrite any hard links within DB
   - `sudo wp --allow-root search-replace 'OLD.domain.com' 'NEW.wp2static.com'`
+ - change admin user email and pwd
+  - `sudo wp --allow-root user update 1 --user_pass="PASSWORD"`
  - rewrite any hard links within site (optional, careful of mailto links, etc)
   - `find -name '*.css' -exec sed -i 's/OLD.domain.com/NEW.wp2static.com/g' {} +`
  - reset file permissions
   - `sudo chown -R bitnami:daemon /opt/bitnami/apps/wordpress/htdocs/`
   - `sudo find /opt/bitnami/apps/wordpress/htdocs/ -type f -exec chmod 664 {} \;`
   - `sudo find /opt/bitnami/apps/wordpress/htdocs/ -type d -exec chmod 775 {} \;`
+  - also php-fpm restart `sudo /opt/bitnami/ctlscript.sh restart php-fpm`
 
 
  - enable debugging
@@ -90,6 +93,8 @@ Tired of clunkily updating a GitHub gist, herein lie my notes used when
  - disable opcache
  - disable mod pagespeed
  - use development level error logging
+ - increase memory
+ - extend max execution time
 
 `sudo vim opt/bitnami/php/etc/php.ini`
 
@@ -111,5 +116,11 @@ https://docs.bitnami.com/google/apps/wordpress-multisite/administration/use-htpa
 
 `curl https://gist.githubusercontent.com/leonstafford/39333da3399adee7e88cb869b4685dff/raw/5e6e7b7fb834d996763da3d358d949d309691350/.vimrc --output ~/.vimrc`
 
+not working without additional domain verification overrides:
+ - enable mail sending (consider Amazon has a limit for LightSail) not verified, erros with
+  - `sudo apt install sendmail` 
+  - `sudo vim opt/bitnami/php/etc/php.ini` 
+  - uncomment `sendmail_path = "env -i /usr/sbin/sendmail -t -i"`
+  - `sudo /opt/bitnami/ctlscript.sh restart apache`
 
 [back](/)
