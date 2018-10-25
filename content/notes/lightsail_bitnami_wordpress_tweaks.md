@@ -9,13 +9,44 @@ categories = []
 
 Tired of clunkily updating a GitHub gist, herein lie my notes used when
  provisioning an AWS LightSail instance with Bitnami WordPress for quick
- prototyping or debugging.
+ migration/debugging of an existing user's WordPress site.
 
- -  copy public key via the virtual terminal in AWS Console
+ - copy public key via the virtual terminal in AWS Console
+ - set a DNS entry to point dev domain to the instance's IP
+ - access site at dev domain
+ - rm bitnami banner
+  - ` sudo /opt/bitnami/apps/wordpress/bnconfig --disable_banner 1`
+  - `sudo /opt/bitnami/ctlscript.sh restart apache`
+ - SSH in using dev domain
+ -  [enable SSL](https://metablogue.com/enable-lets-encrypt-ssl-aws-lightsail/)
+  - `sudo mkdir /opt/bitnami/letsencrypt`
+  - `cd /opt/bitnami/letsencrypt`
+  - `sudo wget https://dl.eff.org/certbot-auto`
+  - `sudo chmod a+x ./certbot-auto`
+  - `sudo ./certbot-auto`
+  - `sudo ./certbot-auto certonly --webroot -w /opt/bitnami/apps/wordpress/htdocs/ -d example.com`
+  - `sudo ln -s /etc/letsencrypt/live/[DOMAIN]/fullchain.pem /opt/bitnami/apache2/conf/server.crt`
+  - `sudo ln -s /etc/letsencrypt/live/[DOMAIN]/privkey.pem /opt/bitnami/apache2/conf/server.key`
+  - Make sure that the certificate file name and path is correct. If you receive an error that file already exists, use the below command to rename the files:
+  - `mv /opt/bitnami/apache2/conf/server.key /opt/bitnami/apache2/conf/serverkey.old`
+  - `mv /opt/bitnami/apache2/conf/server.crt /opt/bitnami/apache2/conf/servercrt.old`
+  - `sudo /opt/bitnami/ctlscript.sh restart apache`
+ - adjust wp-config to use https
+  - `sed -i 's/http/https/' /opt/bitnami/apps/wordpress/htdocs/wp-config.php`
+  - `sudo chown -R bitnami:daemon /opt/bitnami/apps/wordpress/htdocs/`
+ - force https in top of file: `/opt/bitnami/apps/wordpress/conf/httpd-prefix.conf`
+  - `RewriteEngine On`
+  - `RewriteCond %{HTTPS} !=on`
+  - `RewriteRule ^/(.*) https://%{SERVER_NAME}/$1 [R,L]`
+ - `sudo /opt/bitnami/ctlscript.sh restart apache`
 
- -  enable SSL
 
-https://metablogue.com/enable-lets-encrypt-ssl-aws-lightsail/
+
+
+
+
+ - backup wp-config somewhere
+
 
  - disable mod pagespeed
 
@@ -24,7 +55,6 @@ https://metablogue.com/enable-lets-encrypt-ssl-aws-lightsail/
 
 
 
- - backup wp-config somewhere
 
  - copy files into WP dir
 
@@ -42,11 +72,6 @@ sudo find /opt/bitnami/apps/wordpress/htdocs/ -type f -exec chmod 664 {} \;
 sudo find /opt/bitnami/apps/wordpress/htdocs/ -type d -exec chmod 775 {} \;
 ```
 
- - rm bitnami banner
-  ```
-sudo /opt/bitnami/apps/wordpress/bnconfig --disable_banner 1
-sudo /opt/bitnami/ctlscript.sh restart apache
-```
 
  - enable debugging
 
