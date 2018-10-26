@@ -109,6 +109,17 @@ https://docs.bitnami.com/google/apps/wordpress-multisite/administration/use-htpa
 
 ^ needed re-rediting to affect the CR's, look to fix
 
+#### Scratch notes
+
+ - deal with `(70007) The timeout specified has expired` errors from `proxy_fcgi:error`:
+
+https://stackoverflow.com/a/38711063/1668057
+
+`Timeout 900` ->
+
+in `/opt/bitnami/apache2/conf/httpd.conf`
+
+https://medium.com/@sbuckpesch/apache2-and-php-fpm-performance-optimization-step-by-step-guide-1bfecf161534
 
 **import vim and tmux confs**
 
