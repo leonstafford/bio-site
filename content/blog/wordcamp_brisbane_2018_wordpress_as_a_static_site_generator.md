@@ -20,7 +20,7 @@ I'm far from a WordPress fanboi - I regularly talk people **out** of using self-
 
 I'm passionate about open source software and WordPress is still a great example of this. It's definitely helped me earn money over the years and has allowed many others to get involved in development, with a low barrier to entry. I also author a WordPress [plugin](https://wp2static.com), which aims to help solve security, performance and cost issues for users who are already invested in WordPress for their website.
 
-I went to present on static sites and how users can continue to use WordPress for all of it's benefits, but take advantage of publishing it out to host as a static site. I mentioned my plugin as one means to this end, but it was primarily a mission in raising awareness of what static sites are and why people should care (spoiler: security, performance and cost!).
+I went to present on static sites and how users can continue to use WordPress for all of its benefits, but take advantage of publishing it out to host as a static site. I mentioned my plugin as one means to this end, but it was primarily a mission in raising awareness of what static sites are and why people should care (spoiler: security, performance and cost!).
 
 My passions and long term goals are to see people embrace low-resource computing, re-using older hardware with low-footprint but high productivity software to enable more people to get involved in the tech community (and try to put an end to the forced obselence practiced by companies like Apple, pushing users onto new hardware every 2 years - at great cost to the environment and little benefit to society. [More emotions on software bloat and disenchantment within the software industry](http://tonsky.me/blog/disenchantment/)).
 
