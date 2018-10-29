@@ -43,9 +43,9 @@ theme = "coder"
     weight = 1
     url = "/about/"
 [[menu.main]]
-    name = "Notes"
+    name = "Blog"
     weight = 2
-    url  = "/notes/"
+    url  = "/blog/"
 [[menu.main]]
     name = "Essays"
     weight = 3
