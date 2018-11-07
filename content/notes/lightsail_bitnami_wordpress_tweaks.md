@@ -6,6 +6,10 @@ tags = []
 categories = []
 +++
 
+**Update:**
+
+I no longer use Bitnami on AWS LightSail due to the steps required to get sane application behaviour and performance are not worth it. Leaving this up for any searches leading here and will recommend for a similar level of serviced hosting, try [DigitalOcean](https://digitalocean.com) or [Vultr](https://vultr.com).
+
 
 Tired of clunkily updating a GitHub gist, herein lie my notes used when
  provisioning an AWS LightSail instance with Bitnami WordPress for quick
