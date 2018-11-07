@@ -6,7 +6,7 @@ tags = ["OpenBSD", "git", "vim", "tmux"]
 categories = []
 +++
 
-Just as the sage advice from [The Pragmattic Programmer](https://pragprog.com/book/tpp/the-pragmatic-programmer) on mastering one text editor makes so much sense for those of us whose majority of work is rearranging bits on the digital titanic, the same holds true for knowing your operating system and investing in solid tooling for your other main productivite tasks. 
+Just as the sage advice from [The Pragmatic Programmer](https://pragprog.com/book/tpp/the-pragmatic-programmer) on mastering one text editor makes so much sense for those of us whose majority of work is rearranging bits on the digital titanic, the same holds true for knowing your operating system and investing in solid tooling for your other main productive tasks.
 
 ### Opinionated preface - Open source or GTFO
 
@@ -14,7 +14,7 @@ The world's resources are quickly depleting. A growing population having to work
 
 If the aim is to advance humanity and avoid depleting all the resources as population explodes, then we should be looking to re-use and not create uneccessarily. Open source software that's been continually refined since the 60's/70's is continually being optimized and is able to run well on older hardware. 
 
-We don't need another One Laptop Per Child creating future ewaste when we already have an abundance of capable hardware. Let's stop making batteries full of costly/harful chemicals and get more solar to continue running old laptops after their batteries have died.
+We don't need another One Laptop Per Child venture creating future ewaste when we already have an abundance of capable hardware. Let's stop making batteries full of costly/harful chemicals and get more solar to continue running old laptops after their batteries have died.
 
 ### On with the show - the core utilities I invest in learning well
 
@@ -25,7 +25,7 @@ This page serves a purpose to me as storing minimal configuration notes. I striv
 
 #### OpenBSD
 
-Slow is smooth and smooth is fast. Forgoing the bells, whistles and kitchen sink included in most Linux distros, OpenBSD has been planned with security and quality in mind. You're not forced to read the docs, but you'll soon realize it's the most efficent path forward. 
+Slow is smooth and smooth is fast. Forgoing the bells, whistles and kitchen sink included in most Linux distros, OpenBSD has been planned with security and quality in mind. You're not forced to read the docs, but you'll soon realize it's the most efficient path forward. 
 
 Amazing support for older architectures and a great welcoming community.
 
