@@ -81,6 +81,20 @@ My minimal shell profile (bash by default)
 
 ```
 # enable viewing media offline
+function dla {                                                                  
+    # dl searched song to mp3                                                   
+    youtube-dl --extract-audio --no-mtime --audio-format mp3 --no-playlist --default-search ytsearch -o "~/Music/%(title)s.%(ext)s" "$*" 
+    if [ $? -eq 0 ]; then                                                       
+      # send newest file to smplayer playlist                                   
+      LATEST_FILE=$(ls -t *.mp3 | head -1)                                      
+      smplayer -add-to-playlist "$LATEST_FILE"                                  
+    else                                                                        
+        echo "failed to download"                                               
+    fi                                                                          
+} 
+
+# usage
+dla some title with spaces no need to surround with quotes
 ```
 
 
