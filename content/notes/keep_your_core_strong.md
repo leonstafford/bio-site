@@ -29,6 +29,21 @@ Slow is smooth and smooth is fast. Forgoing the bells, whistles and kitchen sink
 
 Amazing support for older architectures and a great welcoming community.
 
+### Japanese support
+
+Install relevant fcitx packages
+
+Install  `ja-sazanami-ttf`
+
+edit `$HOME/.config/fcitx/profile`, changing `anthy:False` to `anthy:True`
+
+set shortcut key in `$HOME/.config/fcitx/config`
+
+set XMODIFIERS in .xsession, along with fcitx-autostart before cwm
+
+xset fontpath
+
+
 ### Vim
 
 My minimal .vimrc
@@ -71,6 +86,96 @@ bind l select-pane -R
 
 # large history limit
 set -g history-limit 999999999
+```
+
+### httpd
+
+# httpd.conf
+
+basic example
+```
+prefork 10
+
+types { include "/usr/share/misc/mime.types" }
+
+server "localhost" {
+	listen on * port 80
+
+	directory index "index.php"
+
+	root "/htdocs"
+
+	location "/*.css*" {
+		request no rewrite
+	}
+
+	location "/*.js*" {
+		request no rewrite
+	}
+
+	location "/*.png*" {
+		request no rewrite
+	}
+
+	location "/mystaticsite*" {
+		directory index "index.html"
+		request no rewrite
+	}
+
+	location "/*.php*" {
+		fastcgi socket "/run/php-fpm.sock"
+	}
+
+	location "/posts*" {
+		fastcgi socket "/run/php-fpm.sock"
+	}
+}
+```
+
+# WP
+
+# file permissions
+
+TODO: currently 777'ing locally to allow watch script
+
+```
+find /var/www/htdocs -type d -exec chmod 775 {} \;
+find /var/www/htdocs -type f -exec chmod 755 {} \;
+chmod 400 /var/www/htdocs/wp-config.php
+```
+
+# watch files
+
+watch_me_sync.sh
+```
+#!/bin/sh                                                                       
+while :                                                                         
+do                                                                              
+    find $HOME/wordpress-static-html-plugin/ -type f ! -path '*/.*' |           
+    entr -d  sh $HOME/deploy_changed_file.sh /_                                 
+done 
+```
+
+deploy_changes_file.sh
+```
+#!/bin/sh                                                                       
+                                                                                
+CHANGED_FILE=$1                                                                 
+PROJECT_DIR=$HOME/wordpress-static-html-plugin/                                 
+BASENAME=${CHANGED_FILE#"$PROJECT_DIR"}                                         
+TARGET_PATH=/var/www/htdocs/wp-content/plugins/wordpress-static-html-plugin/${CHANGED_FILE#"$PROJECT_DIR"}
+TARGET_PATH2=/var/www/htdocs/securesite.local/wp-content/plugins/wordpress-static-html-plugin/${CHANGED_FILE#"$PROJECT_DIR"}
+TARGET_PATH3=/var/www/htdocs/subdirsite.local/wordpress/wp-content/plugins/wordpress-static-html-plugin/${CHANGED_FILE#"$PROJECT_DIR"}
+TARGET_PATH4=/var/www/htdocs/japanesesite.local/wp-content/plugins/wordpress-static-html-plugin/${CHANGED_FILE#"$PROJECT_DIR"}
+                                                                                
+echo "$BASENAME"                                                                
+                                                                                
+cp $CHANGED_FILE $TARGET_PATH                                                   
+cp $CHANGED_FILE $TARGET_PATH2                                                  
+cp $CHANGED_FILE $TARGET_PATH3                                                  
+cp $CHANGED_FILE $TARGET_PATH4                                                  
+                                                                                
+echo '' 
 ```
 
 ### coreutils
