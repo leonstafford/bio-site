@@ -90,6 +90,8 @@ set -g history-limit 999999999
 
 ### httpd
 
+Ensure you have required files from /etc in /var/www/etc chroot (copy all when lazy)
+
 # httpd.conf
 
 basic example
