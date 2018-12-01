@@ -46,7 +46,19 @@ function wp2static_snipcart_callback($buffer) {
 add_filter( 'the_content', 'wp2static_snipcart_callback' );
 
 ```
+// duplicate with wp_styles for loaded CSS in frontend
+function insite_inspect_scripts() {
+    global $wp_scripts;
+    echo PHP_EOL.'<!-- Script Handles: ';
+    foreach( $wp_scripts->queue as $handle ) :
+        echo $handle . ' || ';
+    endforeach;
+    echo ' -->'.PHP_EOL;
+}
 
+add_action( 'wp_print_scripts', 'insite_inspect_scripts' );
+
+```
 
 
 
