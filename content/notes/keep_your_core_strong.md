@@ -167,6 +167,19 @@ pm.min_spare_servers = 2
 pm.start_servers = 3
 ```
 
+# maria
+
+install server and client packages
+
+run `mysql_install_db`
+
+reload and run `mysql_secure_installation`
+
+create a non-root user
+
+connect via 127.0.0.1 vs localhost in WP config
+
+
 # WP
 
 # file permissions
