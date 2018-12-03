@@ -134,6 +134,39 @@ server "localhost" {
 }
 ```
 
+# PHP conf
+
+As per [https://dev.to/nabbisen/fixing-php72fpm-on-openbsd-64-f0f](https://dev.to/nabbisen/fixing-php72fpm-on-openbsd-64-f0f), we need to manually create the missing pool file in /etc/php-fpm.d/somefile.conf
+
+```
+; Start a new pool named 'www'.
+[www]
+
+; specify user
+user = www
+group = www
+listen.owner = www
+listen.group = www
+listen.mode = 0660
+
+chroot = /var/www
+
+listen = /var/www/run/php-fpm.sock
+
+; allow php execution on any URL
+security.limit_extensions = 
+
+; endpoint to monitor PHP FPM
+pm.status_path = /status
+
+; define process manager
+pm = dynamic
+pm.max_children = 9
+pm.max_spare_servers = 4
+pm.min_spare_servers = 2
+pm.start_servers = 3
+```
+
 # WP
 
 # file permissions
