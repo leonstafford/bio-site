@@ -204,6 +204,12 @@ do
 done 
 ```
 
+# doas 
+```
+# run WP-CLI from same user as hitting from web
+permit persist MYUSERNAME as www cmd wp
+```
+
 deploy_changes_file.sh
 ```
 #!/bin/sh                                                                       
