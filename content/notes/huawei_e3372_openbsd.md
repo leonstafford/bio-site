@@ -172,4 +172,86 @@ and continues to poll
 
 Now, we need to set up pppd. Assuming that no received activation SMS is due to not registering on the data network yet, so leaving smsd running and will attempt the ppd setup
 
+
+Much talk is had about HiLink mode vs Stick mode. 
+
+I decided to figure out what mine was being detected as:
+
+```
+obsd# usbdevs
+Controller /dev/usb0:
+addr 01: 8086:0000 Intel, xHCI root hub
+addr 02: 12d1:1442 HUAWEI_MOBILE, HUAWEI_MOBILE
+addr 03: 05ac:12aa Apple Inc., iPod
+Controller /dev/usb1:
+addr 01: 8086:0000 Intel, EHCI root hub
+addr 02: 8087:8000 Intel, Rate Matching Hub
+addr 03: 04f3:012d ELAN, Touchscreen
+addr 04: 04ca:7036 SC20A38485AA4C8E3D, Integrated Camera
+```
+
+Based on the above, it looks like we're already operating in Stick mode, with `12d1:1442`, else assuming the support in umsm in OpenBSD for this device is handling the USB modeswitching automagically...
+
+
+Setting up the pppd stuff
+
+I have 
+
+/etc/ppp/peers/e3372:
+
+```
+cuaU0
+115200
+debug
+noauth
+nocrtscts
+:10.254.254.1
+ipcp-accept-remote
+defaultroute
+user isp@cingulargprs.com
+demand
+active-filter 'not udp port 123'
+persist
+idle 600
+connect "/usr/sbin/chat -v -f /etc/ppp/dtac-chat"
+
+```
+
+/etc/ppp/dtac-chat:
+```
+TIMEOUT 10
+REPORT CONNECT
+ABORT BUSY
+ABORT 'NO CARRIER'
+ABORT ERROR
+'' ATZ OK AT&F OK
+AT+CGDCONT=1,"IP","www.dtac.co.th" OK
+ATD*99***1# CONNECT
+
+```
+
+
+/etc/ppp/chap-secrets
+```
+# Secrets for authentication using CHAP
+# client        server  secret                  IP addresses
+isp@cingulargprs.com    *       CINGULAR1
+
+```
+
+
+
+Finally, run `ifconfig ppp0 create` (should be showing in ifconfig now) and then `pppd e3372 call`
+
+This doesn't give me much, so I tail `/var/log/daemon`, resulting in:
+
+```
+Dec 13 13:09:29 obsd pppd[80914]: pppd 2.3.5 started by leon, uid 0
+Dec 13 13:09:29 obsd pppd[80914]: ioctl(TIOCSETD): Device not configured
+
+```
+
+
+
+
 [back](/)
