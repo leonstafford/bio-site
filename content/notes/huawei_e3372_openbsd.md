@@ -385,6 +385,83 @@ Looking at https://gist.github.com/artizirk/20acc2ab07fe6cad9fcc
 
 Will install `socat` and try sending some AT commands to get a better picture
 
+`socat - /dev/cuaU0`
+
+```
+ATI
+Manufacturer: huawei
+
+Model: E3372
+
+Revision: 22.329.63.00.74
+
+IMEI: 866785033700732
+
++GCAP: +CGSM,+DS,+ES
+
+
+
+OK
+
+AT + CSQ
+
+
++CSQ: 20,99
+# signal strength (over 19 is excellent)
+
+
+
+AT ^ CARDLOCK?
+
+
+^CARDLOCK: 2,10,0
+
+# shows modem is enabled
+
+AT ^ FHVER
+
+
+^FHVER:"E3372H-607 22.329.63.00.74,CL2E3372HM Ver.A"
+
+AT ^ VERSION?
+
+
+^VERSION:BDT:Apr 08 2018, 12:13:47
+
+^VERSION:EXTS:22.329.63.00.74
+
+^VERSION:INTS:
+
+^VERSION:EXTD:WEBUI_17.100.20.02.74_HILINK
+
+^VERSION:INTD:
+
+^VERSION:EXTH:CL2E3372HM Ver.A
+
+^VERSION:INTH:
+
+^VERSION:EXTU:E3372
+
+^VERSION:INTU:
+
+^VERSION:CFG:1004
+
+^VERSION:PRL:
+
+^VERSION:OEM:
+
+^VERSION:INI:
+
+
+
+OK
+
+```
+
+Finally, booted up an Ubuntu live image, which did the switchmode to "HiLink", adding
+a new device to ifconfig
+
+This modified the device, as then booting back into OpenBSD, we have the cdce0 ethernet device showing. Adding a simple `/etc/hostname.cdce0` with `dhcp up` and a `sh /etc/netstart/` and we're all good.
 
 
 [back](/)
