@@ -241,7 +241,11 @@ isp@cingulargprs.com    *       CINGULAR1
 
 
 
-Finally, run `ifconfig ppp0 create` (should be showing in ifconfig now) and then `pppd e3372 call`
+Finally, run
+
+ `ifconfig ppp0 create` (should be showing in ifconfig now) and then
+
+`pppd e3372 call`
 
 This doesn't give me much, so I tail `/var/log/daemon`, resulting in:
 
@@ -251,6 +255,135 @@ Dec 13 13:09:29 obsd pppd[80914]: ioctl(TIOCSETD): Device not configured
 
 ```
 
+A clue, when I try to manually talk to the modem, `cu -s 115200 -l cuaU0`, I get device is busy. So I stop the smsd daemon and try again:
+
+This time, it connects, but nothing is given back...whereas previously, I think I was able to type commands over the serial connection...
+
+To isolate the cause, I duplicated the peers/e3372 file with another with just these lines
+
+/etc/ppp/peers/dummytest
+```
+cuaU0
+115200
+debug
+```
+
+which got me one more line in the output:
+
+```
+Dec 13 13:40:24 obsd pppd[46299]: pppd 2.3.5 started by leon, uid 0
+Dec 13 13:40:27 obsd pppd[46299]: Serial connection established.
+Dec 13 13:40:28 obsd pppd[46299]: ioctl(TIOCSETD): Device not configured
+```
+
+I'm also seeing the device being disconnected at hangup and then re-detected:
+
+```
+Dec 13 13:40:32 obsd /bsd: ucom0 detached
+Dec 13 13:40:32 obsd /bsd: umsm0 detached
+Dec 13 13:40:32 obsd /bsd: umsm1 detached
+Dec 13 13:40:39 obsd /bsd: umsm0 at uhub0 port 2 configuration 1 interface 0 "HUAWEI_MOBILE HUAWEI_MOBILE" rev 2.10/1.02 addr 2                                                                   
+Dec 13 13:40:39 obsd /bsd: umsm0 detached
+Dec 13 13:40:39 obsd /bsd: umsm0 at uhub0 port 2 configuration 1 interface 0 "HUAWEI_MOBILE HUAWEI_MOBILE" rev 2.10/1.02 addr 2                                                                   
+Dec 13 13:40:39 obsd /bsd: ucom0 at umsm0
+Dec 13 13:40:39 obsd /bsd: umsm1 at uhub0 port 2 configuration 1 interface 1 "HUAWEI_MOBILE HUAWEI_MOBILE" rev 2.10/1.02 addr 2
+```
+
+So will continue adjusting that file or the ones it links to and see if we get any more output...
+
+
+Trying `cu` again, allowed some commands to come back from the modem, but no input was accepted:
+
+```
+obsd# cu -s 115200 -l cuaU0
+Connected to /dev/cuaU0 (speed 115200)
+
+^RSSI:20
+
+^HCSQ:"LTE",48,35,86,14
+
+^RSSI:1
+
+^HCSQ:"LTE",11,0,96,0
+
++CGREG: 5,"792D","04947221"
+
++CREG: 5,"792D","04947221"
+
+^RSSI:20
+
+^HCSQ:"LTE",48,37,91,18
+
+^RSSI:20
+
+^HCSQ:"LTE",48,36,91,16
+
+^RSSI:21
+
+^HCSQ:"LTE",50,36,86,14
+
+....
+
+
+^HCSQ:"LTE",54,41,111,16
+
+^RSSI:1
+
+^HCSQ:"LTE",11,0,106,0
+
++CGREG: 5,"007C","00B19502"
+
++CREG: 5,"007C","00B19502"
+
+^RSSI:25
+
+^HCSQ:"LTE",58,47,116,14
+
++CGREG: 1,"007C","00B19502"
+
++CREG: 1,"007C","00B19502"
+
+^XLEMA:1,2,112,0,1,fff
+
+^XLEMA:2,2,911,0,1,fff
+
+^NWTIME:18/12/13,06:20:04+28,00
+
+
+^EONS:0
+
++CGREG: 1,"792D","04947220"
+
++CREG: 1,"792D","04947220"
+
+^RSSI:20
+
+^HCSQ:"LTE",48,39,71,22
+
++CGREG: 5,"792D","04947220"
+
++CREG: 5,"792D","04947220"
+
+^XLEMA:1,2,112,0,1,fff
+
+^XLEMA:2,2,911,0,1,fff
+
+^NWTIME:18/12/13,06:20:08+28,00
+
+
+^EONS:0
+
+```
+
+This would appear that it's getting real messages from the network.
+
+About to reboot, then try under Ubuntu live CD. Then try to get to the bottom of the 
+
+> ioctl(TIOCSETD): Device not configured
+
+Looking at https://gist.github.com/artizirk/20acc2ab07fe6cad9fcc
+
+Will install `socat` and try sending some AT commands to get a better picture
 
 
 
